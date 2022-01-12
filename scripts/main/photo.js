@@ -111,14 +111,21 @@ photo.isLivePhotoPlaying = function () {
 /**
  * @returns {void}
  */
+photo.update_display_overlay = function () {
+	$("#image_overlay").remove();
+	let newOverlay = build.overlay_image(photo.json);
+	if (newOverlay !== "") lychee.imageview.append(newOverlay);
+};
+
+/**
+ * @returns {void}
+ */
 photo.cycle_display_overlay = function () {
 	const oldType = build.check_overlay_type(photo.json, lychee.image_overlay_type);
 	const newType = build.check_overlay_type(photo.json, oldType, true);
 	if (oldType !== newType) {
 		lychee.image_overlay_type = newType;
-		$("#image_overlay").remove();
-		const newOverlay = build.overlay_image(photo.json);
-		if (newOverlay !== "") lychee.imageview.append(newOverlay);
+		photo.update_display_overlay();
 	}
 };
 
@@ -401,6 +408,7 @@ photo.setTitle = function (photoIDs) {
 		if (visible.photo()) {
 			photo.json.title = newTitle;
 			view.photo.title();
+			photo.update_display_overlay();
 		}
 
 		photoIDs.forEach(function (id) {
@@ -751,6 +759,7 @@ photo.setDescription = function (photoID) {
 		if (visible.photo()) {
 			photo.json.description = description;
 			view.photo.description();
+			photo.update_display_overlay();
 		}
 
 		api.post("Photo::setDescription", {
@@ -760,7 +769,7 @@ photo.setDescription = function (photoID) {
 	};
 
 	basicModal.show({
-		body: lychee.html`<p>${lychee.locale["PHOTO_NEW_DESCRIPTION"]} <input class='text' name='description' type='text' maxlength='800' placeholder='${lychee.locale["PHOTO_DESCRIPTION"]}' value='$${oldDescription}'></p>`,
+		body: lychee.html`<p>${lychee.locale["PHOTO_NEW_DESCRIPTION"]} <textarea id='photo_desc' placeholder='${lychee.locale["PHOTO_DESCRIPTION"]}'}'></textarea></p>`,
 		buttons: {
 			action: {
 				title: lychee.locale["PHOTO_SET_DESCRIPTION"],
@@ -772,6 +781,7 @@ photo.setDescription = function (photoID) {
 			},
 		},
 	});
+	$("#photo_desc").html(oldDescription).select();
 };
 
 /**
