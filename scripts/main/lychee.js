@@ -60,6 +60,11 @@ const lychee = {
 	 */
 	image_overlay_type_default: "exif",
 	/**
+	 * Display album description underneath the header in album view
+	 * @type boolean
+	 */
+	display_album_description: true,
+	/**
 	 * Display photo coordinates on map
 	 * @type boolean
 	 */
@@ -333,6 +338,7 @@ lychee.parsePublicInitializationData = function (data) {
 	lychee.public_search = data.config.public_search === "1";
 	lychee.image_overlay_type = data.config.image_overlay_type || "exif";
 	lychee.image_overlay_type_default = lychee.image_overlay_type;
+	lychee.display_album_description = data.config.display_album_description ? data.config.display_album_description === "1" : true;
 	lychee.map_display = data.config.map_display === "1";
 	lychee.map_display_public = data.config.map_display_public === "1";
 	lychee.map_display_direction = data.config.map_display_direction === "1";
