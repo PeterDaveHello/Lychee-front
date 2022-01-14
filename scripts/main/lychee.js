@@ -65,6 +65,11 @@ const lychee = {
 	 */
 	display_album_description: true,
 	/**
+	 * Render album and photo descriptions as markdown
+	 * @type boolean
+	 */
+	markdown_in_descriptions: false, // render album and photo descriptions as markdown
+	/**
 	 * Display photo coordinates on map
 	 * @type boolean
 	 */
@@ -339,6 +344,7 @@ lychee.parsePublicInitializationData = function (data) {
 	lychee.image_overlay_type = data.config.image_overlay_type || "exif";
 	lychee.image_overlay_type_default = lychee.image_overlay_type;
 	lychee.display_album_description = data.config.display_album_description ? data.config.display_album_description === "1" : true;
+	lychee.markdown_in_descriptions = (data.markdown_in_descriptions && data.markdown_in_descriptions === "1") || false;
 	lychee.map_display = data.config.map_display === "1";
 	lychee.map_display_public = data.config.map_display_public === "1";
 	lychee.map_display_direction = data.config.map_display_direction === "1";
@@ -1179,3 +1185,15 @@ lychee.getBaseUrl = function () {
 		return location.href.replace(location.hash, "");
 	}
 };
+
+lychee.markdown = function (description) {
+	if (description) {
+		if (lychee.markdown_in_descriptions) {
+			return marked.parse(description);
+		} else {
+			return description;
+		}
+	} else {
+		return "";
+	}
+}

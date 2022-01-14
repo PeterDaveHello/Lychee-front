@@ -139,7 +139,7 @@ sidebar.toggle = function (is_user_initiated) {
 		lychee.imageview.toggleClass("image--sidebar");
 		if (typeof view !== "undefined") view.album.content.justify(album.json ? album.json.photos : []);
 		sidebar.dom().toggleClass("active");
-		photo.updateSizeLivePhotoDuringAnimation();
+		if (photo.updateSizeLivePhotoDuringAnimation) photo.updateSizeLivePhotoDuringAnimation();
 
 		if (is_user_initiated) sessionStorage.setItem("keepSidebarVisible", visible.sidebar() ? "true" : "false");
 	}
@@ -278,7 +278,7 @@ sidebar.createStructure.photo = function (data) {
 		rows: [
 			{ title: lychee.locale["PHOTO_TITLE"], kind: "title", value: data.title, editable },
 			{ title: lychee.locale["PHOTO_UPLOADED"], kind: "uploaded", value: lychee.locale.printDateTime(data.created_at) },
-			{ title: lychee.locale["PHOTO_DESCRIPTION"], kind: "description", value: data.description ? data.description : "", editable },
+			{ title: lychee.locale["PHOTO_DESCRIPTION"], kind: "description", value: lychee.markdown(data.description), editable },
 		],
 	};
 
@@ -458,7 +458,7 @@ sidebar.createStructure.album = function (data) {
 		type: sidebar.types.DEFAULT,
 		rows: [
 			{ title: lychee.locale["ALBUM_TITLE"], kind: "title", value: data.title, editable },
-			{ title: lychee.locale["ALBUM_DESCRIPTION"], kind: "description", value: data.description ? data.description : "", editable },
+			{ title: lychee.locale["ALBUM_DESCRIPTION"], kind: "description", value: lychee.markdown(data.description), editable },
 		],
 	};
 
@@ -591,7 +591,12 @@ sidebar.render = function (structure) {
 						""
 					);
 				} else {
-					value = lychee.html`<span class='attr_${row.kind}'>$${value}</span>`;
+					if (row.kind == "description" && lychee.markdown_in_descriptions) {
+						// We don't want to escape markdown-generated HTML.
+						value = `<span class='attr_${row.kind}'>${value}</span>`;
+					} else {
+						value = lychee.html`<span class='attr_${row.kind}'>$${value}</span>`;
+					}
 				}
 
 				// Add edit-icon to the value when editable
