@@ -361,7 +361,8 @@ build.overlay_image = function (data) {
 		lychee.html`
 		<div id="image_overlay">
 		<h1>$${data.title ? data.title : lychee.locale["UNTITLED"]}</h1>
-		` + overlay +
+		` +
+		overlay +
 		`
 		</div>
 		`

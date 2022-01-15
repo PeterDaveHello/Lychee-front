@@ -1196,4 +1196,4 @@ lychee.markdown = function (description) {
 	} else {
 		return "";
 	}
-}
+};
