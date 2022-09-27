@@ -41,10 +41,9 @@
  * @property {?string}      live_photo_content_id
  * @property {?string}      live_photo_checksum
  * @property {SizeVariants} size_variants
- * @property {boolean}      is_downloadable
- * @property {boolean}      is_share_button_visible
  * @property {?string}      [next_photo_id]
  * @property {?string}      [previous_photo_id]
+ * @property {{can_edit: boolean, can_download: boolean, can_share_by_link: boolean, can_access_full_photo: boolean}} rights
  */
 
 /**
@@ -91,14 +90,11 @@
  * @property {?string} cover_id
  * @property {?Thumb}  thumb
  * @property {string}  [owner_name] optional, only shown in authenticated mode
- * @property {boolean} is_public
- * @property {boolean} is_downloadable
- * @property {boolean} is_share_button_visible
  * @property {boolean} is_nsfw
- * @property {boolean} grants_full_photo
- * @property {boolean} requires_link
- * @property {boolean} has_password
+ * @property {{can_edit: boolean, can_share_with_users: boolean, can_download: boolean, can_upload: boolean, can_share_by_link: boolean}} rights
+ * @property {?{is_nsfw: boolean, is_public: boolean, is_link_required: boolean, is_share_button_visible: boolean, is_password_required: boolean,  grants_access_full_photo: boolean, grants_download: boolean}} policies
  * @property {boolean} has_albums
+ * @property {boolean} has_password
  * @property {?string} min_taken_at
  * @property {?string} max_taken_at
  * @property {?SortingCriterion} sorting
@@ -116,13 +112,9 @@
  * @property {Photo[]}  photos
  * @property {?Thumb}   thumb
  * @property {string}   [owner_name] optional, only shown in authenticated mode
- * @property {boolean}  is_public
- * @property {boolean}  is_downloadable
- * @property {boolean}  is_share_button_visible
- * @property {boolean}  is_nsfw
- * @property {boolean}  grants_full_photo
- * @property {boolean}  requires_link
- * @property {boolean}  has_password
+ * @property {boolean} is_nsfw
+ * @property {{can_edit: boolean, can_share_with_users: boolean, can_download: boolean, can_upload: boolean, can_share_by_link: boolean}} rights
+ * @property {?{is_nsfw: boolean, is_public: boolean, is_link_required: boolean, is_share_button_visible: boolean, is_password_required: boolean, grants_access_full_photo: boolean, grants_download: boolean}} policies
  * @property {?string}  min_taken_at
  * @property {?string}  max_taken_at
  * @property {?SortingCriterion}  sorting
@@ -136,9 +128,8 @@
  * @property {string}  title
  * @property {Photo[]} [photos]
  * @property {?Thumb}  thumb
- * @property {boolean} is_public
- * @property {boolean} is_downloadable
- * @property {boolean} is_share_button_visible
+ * @property {{can_edit: boolean, can_share: boolean, can_download: boolean, can_upload: boolean, can_share_by_link: boolean}} rights
+ * @property {?{is_nsfw: boolean, is_public: boolean, is_link_required: boolean, is_share_button_visible: boolean, is_password_required: boolean, grants_access_full_photo: boolean, grants_download: boolean}} policies
  */
 
 /**
@@ -208,10 +199,18 @@ const SmartAlbumID = Object.freeze({
  *
  * @property {number}  id
  * @property {string}  username
- * @property {?string} email
- * @property {boolean} may_upload
- * @property {boolean} is_locked
+ * @property {string}  email
  * @property {boolean} has_token
+ */
+
+/**
+ * @typedef UserDTO
+ *
+ * @property {number}  id
+ * @property {string}  username
+ * @property {boolean} may_administrate
+ * @property {boolean} may_upload
+ * @property {boolean} may_edit_own_settings
  */
 
 /**
@@ -278,7 +277,7 @@ const SmartAlbumID = Object.freeze({
  * @typedef InitializationData
  *
  * @property {?User} user
- * @property {{is_admin: boolean, is_locked: boolean, may_upload: boolean}} rights
+ * @property {{can_administrate: boolean, can_edit_own_settings: boolean, can_upload_root: boolean}} rights
  * @property {number} update_json - version number of latest available update
  * @property {boolean} update_available
  * @property {Object.<string, string>} locale

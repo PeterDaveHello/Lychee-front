@@ -477,7 +477,7 @@ lychee.locale = {
 
 	NEW_PASSWORD: "new password",
 	ALLOW_UPLOADS: "Allow uploads",
-	RESTRICTED_ACCOUNT: "Restricted account",
+	ALLOW_USER_SELF_EDIT: "Allow self-management of user account",
 
 	OSM_CONTRIBUTORS: "OpenStreetMap contributors",
 

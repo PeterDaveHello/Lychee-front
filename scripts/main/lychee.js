@@ -30,7 +30,7 @@ const lychee = {
 		 * Backend grants admin rights
 		 * @type boolean
 		 */
-		is_admin: false,
+		can_administrate: false,
 		/**
 		 * Backend grants upload rights
 		 * @type boolean
@@ -40,7 +40,7 @@ const lychee = {
 		 * Backend considers the user to be locked
 		 * @type boolean
 		 */
-		is_locked: false,
+		may_edit_own_settings: false,
 	},
 	/**
 	 * Values:
@@ -250,7 +250,7 @@ lychee.init = function (isFirstInitialization = true) {
 		function (data) {
 			lychee.parseInitializationData(data);
 
-			if (data.user !== null || data.rights.is_admin) {
+			if (data.user !== null || data.rights.can_administrate) {
 				// Authenticated or no admin is registered
 				leftMenu.build();
 				leftMenu.bind();
@@ -262,7 +262,7 @@ lychee.init = function (isFirstInitialization = true) {
 				// In particular it is completely insane to build the UI as if the admin user was successfully authenticated.
 				// This might leak confidential photos to anybody if the DB is filled
 				// with photos and the admin password reset to `null`.
-				if (data.user === null && data.rights.is_admin) settings.createLogin();
+				if (data.user === null && data.rights.can_administrate) settings.createLogin();
 			} else {
 				lychee.setMode("public");
 			}
@@ -304,7 +304,7 @@ lychee.parseInitializationData = function (data) {
 	}
 
 	lychee.parsePublicInitializationData(data);
-	if (lychee.user !== null || lychee.rights.is_admin) {
+	if (lychee.user !== null || lychee.rights.can_administrate) {
 		lychee.parseProtectedInitializationData(data);
 	}
 };
@@ -827,10 +827,10 @@ lychee.setTitle = function (title = "", editable = false) {
  * @param {string} mode - one out of: `public`, `view`, `logged_in`
  */
 lychee.setMode = function (mode) {
-	if (lychee.rights.is_locked) {
+	if (!lychee.rights.can_edit_own_settings) {
 		$("#button_settings_open").remove();
 	}
-	if (!lychee.rights.may_upload) {
+	if (!lychee.rights.can_upload_root) {
 		$("#button_sharing").remove();
 
 		$(document)
@@ -849,7 +849,7 @@ lychee.setMode = function (mode) {
 			.unbind(["command+backspace", "ctrl+backspace"])
 			.unbind(["command+a", "ctrl+a"]);
 	}
-	if (!lychee.rights.is_admin) {
+	if (!lychee.rights.can_administrate) {
 		$("#button_users, #button_logs, #button_diagnostics").remove();
 	}
 

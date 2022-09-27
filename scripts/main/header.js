@@ -287,7 +287,7 @@ header.setMode = function (mode) {
 				tabindex.makeUnfocusable(e);
 			}
 
-			if (lychee.enable_button_add && lychee.rights.may_upload) {
+			if (lychee.enable_button_add && lychee.rights.can_upload_root) {
 				const e = $(".button_add", ".header__toolbar--albums");
 				e.show();
 				tabindex.makeFocusable(e);
@@ -319,7 +319,7 @@ header.setMode = function (mode) {
 			if (
 				!album.json ||
 				(album.json.photos.length === 0 && album.json.albums && album.json.albums.length === 0) ||
-				(!album.isUploadable() && !album.json.is_downloadable)
+				!album.json.rights.can_download
 			) {
 				const e = $("#button_archive");
 				e.hide();
@@ -330,7 +330,7 @@ header.setMode = function (mode) {
 				tabindex.makeFocusable(e);
 			}
 
-			if (album.json && album.json.hasOwnProperty("is_share_button_visible") && !album.json.is_share_button_visible) {
+			if (album.json && !album.json.rights.can_share_by_link) {
 				const e = $("#button_share_album");
 				e.hide();
 				tabindex.makeUnfocusable(e);
@@ -491,7 +491,7 @@ header.setMode = function (mode) {
 				tabindex.makeUnfocusable(e);
 			}
 
-			if (photo.json && photo.json.hasOwnProperty("is_share_button_visible") && !photo.json.is_share_button_visible) {
+			if (photo.json && !photo.json.rights.can_share_by_link) {
 				const e = $("#button_share");
 				e.hide();
 				tabindex.makeUnfocusable(e);
@@ -505,11 +505,9 @@ header.setMode = function (mode) {
 			$("#button_more").show();
 			tabindex.makeFocusable($("#button_more"));
 			if (
-				!(
-					album.isUploadable() ||
-					(photo.json.hasOwnProperty("is_downloadable") ? photo.json.is_downloadable : album.json && album.json.is_downloadable)
-				) &&
-				!(photo.json.size_variants.original.url && photo.json.size_variants.original.url !== "")
+				photo.json &&
+				!photo.json.rights.can_download &&
+				(!photo.json.rights.can_access_full_photo || !(photo.json.size_variants.original.url && photo.json.size_variants.original.url !== ""))
 			) {
 				const e = $("#button_more");
 				e.hide();

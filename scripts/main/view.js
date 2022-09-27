@@ -79,7 +79,7 @@ view.albums = {
 					html += build.divider(album.owner_name);
 					current_owner = album.owner_name;
 				}
-				return html + build.album(album, !lychee.rights.is_admin);
+				return html + build.album(album, !lychee.rights.can_administrate);
 			}, "");
 
 			if (smartData === "" && tagAlbumsData === "" && albumsData === "" && sharedData === "") {
@@ -491,7 +491,7 @@ view.album = {
 					// },
 					targetRowHeight: parseFloat($(".photo").css("--lychee-default-height")),
 				});
-				// if (lychee.rights.is_admin) console.log(layoutGeometry);
+				// if (lychee.rights.can_administrate) console.log(layoutGeometry);
 				$(".justified-layout").css("height", layoutGeometry.containerHeight + "px");
 				$(".justified-layout > div").each(function (i) {
 					if (!layoutGeometry.boxes[i]) {
@@ -606,8 +606,8 @@ view.album = {
 	public: function () {
 		$("#button_visibility_album, #button_sharing_album_users").removeClass("active--not-hidden active--hidden");
 
-		if (album.json.is_public) {
-			if (album.json.requires_link) {
+		if (album.json.policies && album.json.policies.is_public) {
+			if (album.json.policies.is_link_required) {
 				$("#button_visibility_album, #button_sharing_album_users").addClass("active--hidden");
 			} else {
 				$("#button_visibility_album, #button_sharing_album_users").addClass("active--not-hidden");
@@ -625,7 +625,7 @@ view.album = {
 	 * @returns {void}
 	 */
 	requiresLink: function () {
-		if (album.json.requires_link) sidebar.changeAttr("hidden", lychee.locale["ALBUM_SHR_YES"]);
+		if (album.json.policies.is_link_required) sidebar.changeAttr("hidden", lychee.locale["ALBUM_SHR_YES"]);
 		else sidebar.changeAttr("hidden", lychee.locale["ALBUM_SHR_NO"]);
 	},
 
@@ -633,7 +633,7 @@ view.album = {
 	 * @returns {void}
 	 */
 	nsfw: function () {
-		if (album.json.is_nsfw) {
+		if (album.json.policies && album.json.policies.is_nsfw) {
 			// Sensitive
 			$("#button_nsfw_album").addClass("active").attr("title", lychee.locale["ALBUM_UNMARK_NSFW"]);
 		} else {
@@ -646,7 +646,7 @@ view.album = {
 	 * @returns {void}
 	 */
 	downloadable: function () {
-		if (album.json.is_downloadable) sidebar.changeAttr("downloadable", lychee.locale["ALBUM_SHR_YES"]);
+		if (album.json.policies.grants_download) sidebar.changeAttr("downloadable", lychee.locale["ALBUM_SHR_YES"]);
 		else sidebar.changeAttr("downloadable", lychee.locale["ALBUM_SHR_NO"]);
 	},
 
@@ -654,7 +654,8 @@ view.album = {
 	 * @returns {void}
 	 */
 	shareButtonVisible: () => {
-		if (album.json.is_share_button_visible) sidebar.changeAttr("share_button_visible", lychee.locale["ALBUM_SHR_YES"]);
+		// TODO: DOUBLE CHECK
+		if (album.json.policies.is_share_button_visible) sidebar.changeAttr("share_button_visible", lychee.locale["ALBUM_SHR_YES"]);
 		else sidebar.changeAttr("share_button_visible", lychee.locale["ALBUM_SHR_NO"]);
 	},
 
@@ -662,7 +663,7 @@ view.album = {
 	 * @returns {void}
 	 */
 	password: function () {
-		if (album.json.has_password) sidebar.changeAttr("password", lychee.locale["ALBUM_SHR_YES"]);
+		if (album.json.policies.is_password_required) sidebar.changeAttr("password", lychee.locale["ALBUM_SHR_YES"]);
 		else sidebar.changeAttr("password", lychee.locale["ALBUM_SHR_NO"]);
 	},
 
@@ -1034,7 +1035,7 @@ view.settings = {
 		init: function () {
 			view.settings.clearContent();
 			view.settings.content.setLogin();
-			if (lychee.rights.is_admin) {
+			if (lychee.rights.can_administrate) {
 				view.settings.content.setSorting();
 				view.settings.content.setDropboxKey();
 				view.settings.content.setLang();
@@ -1717,8 +1718,8 @@ view.users = {
 					<span class="text_icon" title="${lychee.locale["ALLOW_UPLOADS"]}">
 						${build.iconic("data-transfer-upload")}
 					</span>
-					<span class="text_icon" title="${lychee.locale["RESTRICTED_ACCOUNT"]}">
-						${build.iconic("lock-locked")}
+					<span class="text_icon" title="${lychee.locale["ALLOW_USER_SELF_EDIT"]}">
+						${build.iconic("lock-unlocked")}
 					</span>
 				</p></div>`;
 
@@ -1732,8 +1733,8 @@ view.users = {
 				if (_user.may_upload) {
 					$("#UserData" + _user.id + ' .choice input[name="may_upload"]').click();
 				}
-				if (_user.is_locked) {
-					$("#UserData" + _user.id + ' .choice input[name="is_locked"]').click();
+				if (_user.may_edit_own_settings) {
+					$("#UserData" + _user.id + ' .choice input[name="may_edit_own_settings"]').click();
 				}
 			});
 
@@ -1748,9 +1749,9 @@ view.users = {
 								<span class="checkbox"><svg class="iconic "><use xlink:href="#check"></use></svg></span>
 							</label>
 						</span>
-						<span class="choice" title="${lychee.locale["RESTRICTED_ACCOUNT"]}">
+						<span class="choice" title="${lychee.locale["ALLOW_USER_SELF_EDIT"]}">
 							<label>
-								<input type="checkbox" name="is_locked" />
+								<input type="checkbox" name="may_edit_own_settings" />
 								<span class="checkbox"><svg class="iconic "><use xlink:href="#check"></use></svg></span>
 							</label>
 						</span>

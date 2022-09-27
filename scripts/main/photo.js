@@ -578,7 +578,7 @@ photo.setProtectionPolicy = function (photoID) {
 	const msg_choices = lychee.html`
 		<div class='choice'>
 			<label>
-				<input type='checkbox' name='grants_full_photo' disabled>
+				<input type='checkbox' name='grant_access_full_photo' disabled>
 				<span class='checkbox'>${build.iconic("check")}</span>
 				<span class='label'>${lychee.locale["PHOTO_FULL"]}</span>
 			</label>
@@ -586,7 +586,7 @@ photo.setProtectionPolicy = function (photoID) {
 		</div>
 		<div class='choice'>
 			<label>
-				<input type='checkbox' name='requires_link' disabled>
+				<input type='checkbox' name='is_link_required' disabled>
 				<span class='checkbox'>${build.iconic("check")}</span>
 				<span class='label'>${lychee.locale["PHOTO_HIDDEN"]}</span>
 			</label>
@@ -594,7 +594,7 @@ photo.setProtectionPolicy = function (photoID) {
 		</div>
 		<div class='choice'>
 			<label>
-				<input type='checkbox' name='is_downloadable' disabled>
+				<input type='checkbox' name='grant_download' disabled>
 				<span class='checkbox'>${build.iconic("check")}</span>
 				<span class='label'>${lychee.locale["PHOTO_DOWNLOADABLE"]}</span>
 			</label>
@@ -640,14 +640,14 @@ photo.setProtectionPolicy = function (photoID) {
 
 		$('.basicModal .switch input[name="is_public"]').prop("checked", true);
 		if (album.json) {
-			if (album.json.grants_full_photo) {
-				$('.basicModal .choice input[name="grants_full_photo"]').prop("checked", true);
+			if (album.json.grant_access_full_photo) {
+				$('.basicModal .choice input[name="grant_access_full_photo"]').prop("checked", true);
 			}
 			// Photos in public albums are never hidden as such.  It's the
 			// album that's hidden.  Or is that distinction irrelevant to end
 			// users?
-			if (album.json.is_downloadable) {
-				$('.basicModal .choice input[name="is_downloadable"]').prop("checked", true);
+			if (album.json.rights.can_download) {
+				$('.basicModal .choice input[name="grant_download"]').prop("checked", true);
 			}
 			if (album.json.has_password) {
 				$('.basicModal .choice input[name="has_password"]').prop("checked", true);
@@ -710,13 +710,13 @@ photo.setProtectionPolicy = function (photoID) {
 		$('.basicModal .switch input[name="is_public"]').on("click", function () {
 			if ($(this).prop("checked") === true) {
 				if (lychee.full_photo) {
-					$('.basicModal .choice input[name="grants_full_photo"]').prop("checked", true);
+					$('.basicModal .choice input[name="grant_access_full_photo"]').prop("checked", true);
 				}
 				if (lychee.public_photos_hidden) {
-					$('.basicModal .choice input[name="requires_link"]').prop("checked", true);
+					$('.basicModal .choice input[name="is_link_required"]').prop("checked", true);
 				}
 				if (lychee.downloadable) {
-					$('.basicModal .choice input[name="is_downloadable"]').prop("checked", true);
+					$('.basicModal .choice input[name="grant_download"]').prop("checked", true);
 				}
 				if (lychee.share_button_visible) {
 					$('.basicModal .choice input[name="is_share_button_visible"]').prop("checked", true);
