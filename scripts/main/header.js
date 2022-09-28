@@ -287,7 +287,7 @@ header.setMode = function (mode) {
 				tabindex.makeUnfocusable(e);
 			}
 
-			if (lychee.enable_button_add && lychee.rights.can_upload_root) {
+			if (lychee.enable_button_add && lychee.rights.root_album.can_upload) {
 				const e = $(".button_add", ".header__toolbar--albums");
 				e.show();
 				tabindex.makeFocusable(e);

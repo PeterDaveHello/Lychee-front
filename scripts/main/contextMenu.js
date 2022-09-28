@@ -25,7 +25,7 @@ contextMenu.add = function (e) {
 		items.splice(1);
 	}
 
-	if (!lychee.rights.can_administrate) {
+	if (!lychee.rights.settings.can_edit) {
 		// remove import from dropbox and server if not admin
 		items.splice(3, 2);
 	} else if (!lychee.dropboxKey || lychee.dropboxKey === "") {
@@ -678,7 +678,7 @@ contextMenu.move = function (IDs, e, callback, kind = "UNSORTED", display_root =
 			addItems(data.albums);
 		}
 
-		if (data.shared_albums && data.shared_albums.length > 0 && lychee.rights.can_administrate) {
+		if (data.shared_albums && data.shared_albums.length > 0 && lychee.rights.settings.can_edit) {
 			items = items.concat({});
 			addItems(data.shared_albums);
 		}
@@ -719,7 +719,7 @@ contextMenu.sharePhoto = function (photoID, e) {
 		{ title: build.iconic("envelope-closed") + "Mail", fn: () => photo.share(photoID, "mail") },
 		{
 			title: build.iconic("dropbox", iconClass) + "Dropbox",
-			visible: lychee.rights.can_administrate === true,
+			visible: lychee.rights.settings.can_edit === true,
 			fn: () => photo.share(photoID, "dropbox"),
 		},
 		{ title: build.iconic("link-intact") + lychee.locale["DIRECT_LINKS"], fn: () => photo.showDirectLinks(photoID) },
@@ -786,12 +786,12 @@ contextMenu.config = function (e) {
 	if (lychee.new_photos_notification) {
 		items.push({ title: build.iconic("bell") + lychee.locale["NOTIFICATIONS"], fn: notifications.load });
 	}
-	if (lychee.rights.can_administrate) {
+	if (lychee.rights.settings.can_edit) {
 		items.push({ title: build.iconic("person") + lychee.locale["USERS"], fn: users.list });
 	}
 	items.push({ title: build.iconic("key") + lychee.locale["U2F"], fn: u2f.list });
 	items.push({ title: build.iconic("cloud") + lychee.locale["SHARING"], fn: sharing.list });
-	if (lychee.rights.can_administrate) {
+	if (lychee.rights.settings.can_edit) {
 		items.push({
 			title: build.iconic("align-left") + lychee.locale["LOGS"],
 			fn: function () {

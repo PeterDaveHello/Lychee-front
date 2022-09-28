@@ -24,24 +24,9 @@ const lychee = {
 	user: null,
 	/**
 	 * The rights granted by the backend
+	 * @type {?InitRightsDTO}
 	 */
-	rights: {
-		/**
-		 * Backend grants admin rights
-		 * @type boolean
-		 */
-		can_administrate: false,
-		/**
-		 * Backend grants upload rights
-		 * @type boolean
-		 */
-		may_upload: false,
-		/**
-		 * Backend considers the user to be locked
-		 * @type boolean
-		 */
-		may_edit_own_settings: false,
-	},
+	rights: null,
 	/**
 	 * Values:
 	 *
@@ -250,7 +235,7 @@ lychee.init = function (isFirstInitialization = true) {
 		function (data) {
 			lychee.parseInitializationData(data);
 
-			if (data.user !== null || data.rights.can_administrate) {
+			if (data.user !== null || data.rights.settings.can_edit) {
 				// Authenticated or no admin is registered
 				leftMenu.build();
 				leftMenu.bind();
@@ -262,7 +247,7 @@ lychee.init = function (isFirstInitialization = true) {
 				// In particular it is completely insane to build the UI as if the admin user was successfully authenticated.
 				// This might leak confidential photos to anybody if the DB is filled
 				// with photos and the admin password reset to `null`.
-				if (data.user === null && data.rights.can_administrate) settings.createLogin();
+				if (data.user === null && data.rights.settings.can_edit) settings.createLogin();
 			} else {
 				lychee.setMode("public");
 			}
@@ -304,7 +289,7 @@ lychee.parseInitializationData = function (data) {
 	}
 
 	lychee.parsePublicInitializationData(data);
-	if (lychee.user !== null || lychee.rights.can_administrate) {
+	if (lychee.user !== null || lychee.rights.settings.can_edit) {
 		lychee.parseProtectedInitializationData(data);
 	}
 };
@@ -827,11 +812,11 @@ lychee.setTitle = function (title = "", editable = false) {
  * @param {string} mode - one out of: `public`, `view`, `logged_in`
  */
 lychee.setMode = function (mode) {
-	if (!lychee.rights.can_edit_own_settings) {
-		$("#button_settings_open").remove();
-	}
-	if (!lychee.rights.can_upload_root) {
-		$("#button_sharing").remove();
+	// if (!lychee.rights.settings.can_edit || lychee.rights.users.can_edit_own_settings) {
+	// 	$("#button_settings_open").remove();
+	// }
+	if (!lychee.rights.root_album.can_upload) {
+		// $("#button_sharing").remove();
 
 		$(document)
 			.off("click", ".header__title--editable")
@@ -849,9 +834,9 @@ lychee.setMode = function (mode) {
 			.unbind(["command+backspace", "ctrl+backspace"])
 			.unbind(["command+a", "ctrl+a"]);
 	}
-	if (!lychee.rights.can_administrate) {
-		$("#button_users, #button_logs, #button_diagnostics").remove();
-	}
+	// if (!lychee.rights.settings.can_edit) {
+	// 	$("#button_users, #button_logs, #button_diagnostics").remove();
+	// }
 
 	if (mode === "logged_in") {
 		// After login the keyboard short-cuts to login by password (l) and

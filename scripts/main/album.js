@@ -1402,7 +1402,7 @@ album.isUploadable = function () {
 		return true;
 	}
 
-	if (album.json === null && lychee.rights.can_upload_root) {
+	if (album.json === null && lychee.rights.root_album.can_upload) {
 		return true;
 	}
 
