@@ -1923,7 +1923,7 @@ view.logs = {
 
 	/** @returns {void} */
 	clearContent: function () {
-		let html = ''
+		let html = "";
 		if (lychee.rights.settings.can_clear_logs) {
 			html += lychee.html`
 			<div class="clear_logs_update">
