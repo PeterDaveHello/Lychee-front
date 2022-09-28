@@ -68,7 +68,7 @@ leftMenu.build = function () {
 	html += lychee.html`
 		<a class="linkMenu" id="button_about" data-tabindex="-1">${build.iconic("info")}${lychee.locale["ABOUT_LYCHEE"]}</a>
 		<a class="linkMenu" id="button_signout" data-tabindex="21">${build.iconic("account-logout")}${lychee.locale["SIGN_OUT"]}</a>`;
-	if (lychee.update_available) {
+	if (lychee.rights.settings.can_update && lychee.update_available) {
 		html += lychee.html`
 		<a class="linkMenu" id="button_update"  data-tabindex="-1">${build.iconic("timer")}${lychee.locale["UPDATE_AVAILABLE"]}</a>
 		`;

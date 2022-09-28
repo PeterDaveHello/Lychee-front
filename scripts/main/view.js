@@ -1923,7 +1923,9 @@ view.logs = {
 
 	/** @returns {void} */
 	clearContent: function () {
-		const html = lychee.html`
+		let html = ''
+		if (lychee.rights.settings.can_clear_logs) {
+			html += lychee.html`
 			<div class="clear_logs_update">
 				<a id="Clean_Noise" class="basicModal__button">
 					${lychee.locale["CLEAN_LOGS"]}
@@ -1931,7 +1933,9 @@ view.logs = {
 				<a id="Clear" class="basicModal__button">
 					${lychee.locale["CLEAR"]}
 				</a>
-			</div>
+			</div>`;
+		}
+		html += lychee.html`
 			<pre class="logs_diagnostics_view"></pre>`;
 		lychee.content.html(html);
 
