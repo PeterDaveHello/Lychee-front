@@ -330,7 +330,7 @@ header.setMode = function (mode) {
 				tabindex.makeFocusable(e);
 			}
 
-			if (album.json && !album.json.rights.can_share_by_link) {
+			if (!lychee.share_button_visible) {
 				const e = $("#button_share_album");
 				e.hide();
 				tabindex.makeUnfocusable(e);
@@ -491,7 +491,7 @@ header.setMode = function (mode) {
 				tabindex.makeUnfocusable(e);
 			}
 
-			if (photo.json && !photo.json.rights.can_share_by_link) {
+			if (!lychee.share_button_visible) {
 				const e = $("#button_share");
 				e.hide();
 				tabindex.makeUnfocusable(e);

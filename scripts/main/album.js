@@ -829,7 +829,6 @@ album.setProtectionPolicy = function (albumID) {
 		album.json.policies.grants_access_full_photo = $('.basicModal .choice input[name="grants_access_full_photo"]:checked').length === 1;
 		album.json.policies.is_link_required = $('.basicModal .choice input[name="is_link_required"]:checked').length === 1;
 		album.json.policies.grants_download = $('.basicModal .choice input[name="grants_download"]:checked').length === 1;
-		album.json.policies.is_share_button_visible = $('.basicModal .choice input[name="is_share_button_visible"]:checked').length === 1;
 		album.json.policies.is_password_required = $('.basicModal .choice input[name="is_password_required"]:checked').length === 1;
 		const newPassword = $('.basicModal .choice input[name="passwordtext"]').val() || null;
 
@@ -853,7 +852,6 @@ album.setProtectionPolicy = function (albumID) {
 			is_nsfw: album.json.policies.is_nsfw,
 			is_link_required: album.json.policies.is_link_required,
 			grants_download: album.json.policies.grants_download,
-			is_share_button_visible: album.json.policies.is_share_button_visible,
 		};
 		if (album.json.policies.is_password_required) {
 			if (newPassword) {
@@ -904,14 +902,6 @@ album.setProtectionPolicy = function (albumID) {
 			</div>
 			<div class='choice'>
 				<label>
-					<input type='checkbox' name='is_share_button_visible'>
-					<span class='checkbox'>${build.iconic("check")}</span>
-					<span class='label'>${lychee.locale["ALBUM_SHARE_BUTTON_VISIBLE"]}</span>
-				</label>
-				<p>${lychee.locale["ALBUM_SHARE_BUTTON_VISIBLE_EXPL"]}</p>
-			</div>
-			<div class='choice'>
-				<label>
 					<input type='checkbox' name='is_password_required'>
 					<span class='checkbox'>${build.iconic("check")}</span>
 					<span class='label'>${lychee.locale["ALBUM_PASSWORD_PROT"]}</span>
@@ -941,7 +931,6 @@ album.setProtectionPolicy = function (albumID) {
 			$('.basicModal .choice input[name="grants_access_full_photo"]').prop("checked", album.json.policies.grants_access_full_photo);
 			$('.basicModal .choice input[name="is_link_required"]').prop("checked", album.json.policies.is_link_required);
 			$('.basicModal .choice input[name="grants_download"]').prop("checked", album.json.policies.grants_download);
-			$('.basicModal .choice input[name="is_share_button_visible"]').prop("checked", album.json.policies.is_share_button_visible);
 			$('.basicModal .choice input[name="is_password_required"]').prop("checked", album.json.policies.is_password_required);
 			if (album.json.policies.is_password_required) {
 				$('.basicModal .choice input[name="passwordtext"]').show();
@@ -952,7 +941,6 @@ album.setProtectionPolicy = function (albumID) {
 			$('.basicModal .choice input[name="grants_access_full_photo"]').prop("checked", lychee.grants_access_full_photo);
 			$('.basicModal .choice input[name="is_link_required"]').prop("checked", false);
 			$('.basicModal .choice input[name="grants_download"]').prop("checked", lychee.grants_download);
-			$('.basicModal .choice input[name="is_share_button_visible"]').prop("checked", lychee.is_share_button_visible);
 			$('.basicModal .choice input[name="is_password_required"]').prop("checked", false);
 			$('.basicModal .choice input[name="passwordtext"]').hide();
 		}
@@ -1106,8 +1094,7 @@ album.toggleNSFW = function () {
  * @returns {void}
  */
 album.share = function (service) {
-	// TODO: FIX ME THIS IS A RIGHT: CAN_SHARE_SOMETHING
-	if (album.json.policies.hasOwnProperty("is_share_button_visible") && !album.json.policies.is_share_button_visible) {
+	if (!lychee.share_button_visible) {
 		return;
 	}
 
@@ -1130,8 +1117,7 @@ album.share = function (service) {
  * @returns {void}
  */
 album.qrCode = function () {
-	// TODO: FIX ME THIS IS A RIGHT: CAN_SHARE_SOMETHING
-	if (album.json.hasOwnProperty("is_share_button_visible") && !album.json.is_share_button_visible) {
+	if (!lychee.share_button_visible) {
 		return;
 	}
 

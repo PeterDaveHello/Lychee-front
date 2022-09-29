@@ -653,15 +653,6 @@ view.album = {
 	/**
 	 * @returns {void}
 	 */
-	shareButtonVisible: () => {
-		// TODO: DOUBLE CHECK
-		if (album.json.policies.is_share_button_visible) sidebar.changeAttr("share_button_visible", lychee.locale["ALBUM_SHR_YES"]);
-		else sidebar.changeAttr("share_button_visible", lychee.locale["ALBUM_SHR_NO"]);
-	},
-
-	/**
-	 * @returns {void}
-	 */
 	password: function () {
 		if (album.json.policies.is_password_required) sidebar.changeAttr("password", lychee.locale["ALBUM_SHR_YES"]);
 		else sidebar.changeAttr("password", lychee.locale["ALBUM_SHR_NO"]);

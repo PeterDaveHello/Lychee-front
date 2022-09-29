@@ -602,14 +602,6 @@ photo.setProtectionPolicy = function (photoID) {
 		</div>
 		<div class='choice'>
 			<label>
-				<input type='checkbox' name='is_share_button_visible' disabled>
-				<span class='checkbox'>${build.iconic("check")}</span>
-				<span class='label'>${lychee.locale["PHOTO_SHARE_BUTTON_VISIBLE"]}</span>
-			</label>
-			<p>${lychee.locale["PHOTO_SHARE_BUTTON_VISIBLE_EXPL"]}</p>
-		</div>
-		<div class='choice'>
-			<label>
 				<input type='checkbox' name='has_password' disabled>
 				<span class='checkbox'>${build.iconic("check")}</span>
 				<span class='label'>${lychee.locale["PHOTO_PASSWORD_PROT"]}</span>
@@ -717,9 +709,6 @@ photo.setProtectionPolicy = function (photoID) {
 				}
 				if (lychee.downloadable) {
 					$('.basicModal .choice input[name="grant_download"]').prop("checked", true);
-				}
-				if (lychee.share_button_visible) {
-					$('.basicModal .choice input[name="is_share_button_visible"]').prop("checked", true);
 				}
 				// Photos shared individually can't be password-protected.
 			} else {
@@ -886,7 +875,7 @@ photo.deleteTag = function (photoID, index) {
  * @returns {void}
  */
 photo.share = function (photoID, service) {
-	if (!photo.json.is_share_button_visible) {
+	if (!lychee.share_button_visible) {
 		return;
 	}
 

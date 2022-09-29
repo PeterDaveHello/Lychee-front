@@ -707,7 +707,7 @@ contextMenu.move = function (IDs, e, callback, kind = "UNSORTED", display_root =
  * @returns {void}
  */
 contextMenu.sharePhoto = function (photoID, e) {
-	if (!photo.json.rights.can_share_by_link) {
+	if (!lychee.share_button_visible) {
 		return;
 	}
 
@@ -736,7 +736,7 @@ contextMenu.sharePhoto = function (photoID, e) {
  * @returns {void}
  */
 contextMenu.shareAlbum = function (albumID, e) {
-	if (!album.json.rights.can_share_by_link) {
+	if (!lychee.share_button_visible) {
 		return;
 	}
 
