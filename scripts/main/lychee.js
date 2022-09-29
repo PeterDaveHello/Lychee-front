@@ -330,6 +330,7 @@ lychee.parsePublicInitializationData = function (data) {
 
 	lychee.header_auto_hide = data.config_device.header_auto_hide;
 	lychee.active_focus_on_page_load = data.config_device.active_focus_on_page_load;
+	lychee.share_button_visible = data.config.share_button_visible === "1";
 	lychee.enable_button_visibility = data.config_device.enable_button_visibility;
 	lychee.enable_button_share = data.config_device.enable_button_share;
 	lychee.enable_button_archive = data.config_device.enable_button_archive;
@@ -367,7 +368,6 @@ lychee.parseProtectedInitializationData = function (data) {
 	lychee.full_photo = data.config.full_photo === "1";
 	lychee.downloadable = data.config.downloadable === "1";
 	lychee.public_photos_hidden = data.config.public_photos_hidden === "1";
-	lychee.share_button_visible = data.config.share_button_visible === "1";
 	lychee.delete_imported = data.config.delete_imported === "1";
 	lychee.import_via_symlink = data.config.import_via_symlink === "1";
 	lychee.skip_duplicates = data.config.skip_duplicates === "1";

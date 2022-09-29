@@ -841,7 +841,6 @@ album.setProtectionPolicy = function (albumID) {
 			view.album.public();
 			view.album.requiresLink();
 			view.album.downloadable();
-			view.album.shareButtonVisible();
 			view.album.password();
 		}
 
